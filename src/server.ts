@@ -1,13 +1,16 @@
 import "express-async-errors";
 import "express-form-data";
 import express, { NextFunction, Request, Response }  from "express";
-import { routes } from "./routes";
+import { request, response, Router } from "express";
+import {CreateUserController} from "./modules/Acount/CreateUser/CreateUserControllers"
+import {AuthenticateClientController} from "./modules/Acount/Authenticate/AuthenticateUserControllers"
+import {ensureAuthenticateUser} from "./middlewares/ensureUserAuthenticate"
+import { prisma } from "./database/prismaClient";
+
 const formData = require('express-form-data');
-
-
-
-
 var cors = require('cors');
+const createUserController = new CreateUserController(); 
+const authenticateClientController = new AuthenticateClientController();
 
 // use it before all route definitions kk
 
@@ -22,7 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: '*'})); //dominio da requisição
 
 
-app.use(routes);
 
 
 
@@ -44,4 +46,17 @@ app.use(
         message: "Internal server error"
     });
 });
+
+
+app.post("/create/user",(request, response)=>  createUserController.handle(request, response) )
+app.post("/authenticate",(request, response)=>  authenticateClientController.handle(request, response) )
+
+app.get('/users', async (request, response) => {
+  
+  
+    const users = await prisma.user.findMany()
+  
+    return response.json(users)
+  })
+
 app.listen(port, () => console.log("Server is running"));
