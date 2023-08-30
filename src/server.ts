@@ -13,16 +13,12 @@ const createUserController = new CreateUserController();
 const authenticateClientController = new AuthenticateClientController();
 
 // use it before all route definitions kk
-
-
-
-
 const port = process.env.PORT || 5000
 const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({origin: '*'})); //dominio da requisição
+
 
 
 
