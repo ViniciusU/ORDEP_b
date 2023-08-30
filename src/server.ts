@@ -17,18 +17,22 @@ const port = process.env.PORT || 5000
 const app = express();
 app.use(express.json());
 
-
-
-
-
-
-
-
 app.get("/", (request,response)=>{
     return response.json({
         message: "Hello world"
     });
 });
+
+app.post("/create/user",(request, response)=>  createUserController.handle(request, response) )
+app.post("/authenticate",(request, response)=>  authenticateClientController.handle(request, response) )
+
+app.get('/users', async (request, response) => {
+  
+  
+    const users = await prisma.user.findMany()
+  
+    return response.json(users)
+  })
 
 
 app.use(
@@ -42,17 +46,5 @@ app.use(
         message: "Internal server error"
     });
 });
-
-
-app.post("/create/user",(request, response)=>  createUserController.handle(request, response) )
-app.post("/authenticate",(request, response)=>  authenticateClientController.handle(request, response) )
-
-app.get('/users', async (request, response) => {
-  
-  
-    const users = await prisma.user.findMany()
-  
-    return response.json(users)
-  })
 
 app.listen(port, () => console.log("Server is running"));
