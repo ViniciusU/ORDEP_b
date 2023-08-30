@@ -31,7 +31,7 @@ export class CreateUserUseCase{
           if (!existingConvidado) {
             convidadoPermission = await prisma.permission.create({
               data: {
-                name: 'admin',
+                name: 'convidado',
               },
             });
           }

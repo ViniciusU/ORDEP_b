@@ -14,7 +14,7 @@ var cors = require('cors');
 
 
 
-
+const port = process.env.PORT || 5000
 const app = express();
 app.use(express.json());
 app.use(express.static("public"));
@@ -44,4 +44,4 @@ app.use(
         message: "Internal server error"
     });
 });
-app.listen(3000, () => console.log("Server is running"));
+app.listen(port, () => console.log("Server is running"));
